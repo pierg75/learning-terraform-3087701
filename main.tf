@@ -60,7 +60,7 @@ module "alb" {
   listeners = {
     http-tcp = {
       port     = 80
-      protocol = "TCP_UDP"
+      protocol = "HTTP"
       forward = {
         target_group_key = "instance" 
       }
@@ -74,7 +74,6 @@ module "alb" {
       backend_protocol = "HTTP"
       backend_port     = 80
       target_type      = "instance"
-      vpc_id           = aws_instance.blog.id
     }
   }
 
