@@ -50,6 +50,9 @@ module "alb" {
   source = "terraform-aws-modules/alb/aws"
 
   name    = "blog-alb"
+
+  load_balancer_type = "application"
+
   vpc_id  = module.blog_vpc.default_vpc_id
   subnets = module.blog_vpc.public_subnets
   security_groups = [module.blog_sg.security_group_id]
@@ -59,19 +62,19 @@ module "alb" {
       port     = 80
       protocol = "TCP_UDP"
       forward = {
-        target_group_key = "blog-instance" 
+        target_group_key = "instance" 
       }
 
     }
   }
 
   target_groups = {
-    blog-instance = {
+    instance = {
       name_prefix      = "blog-"
       backend_protocol = "HTTP"
       backend_port     = 80
       target_type      = "instance"
-      target_id        = aws_instance.blog.id
+      vpc_id           = aws_instance.blog.id
     }
   }
 
